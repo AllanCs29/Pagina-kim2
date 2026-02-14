@@ -217,10 +217,13 @@
         // DATOS DE LAS DIAPOSITIVAS
         const slides = [
             { text: "Hola mi amor!!!!", img: "foto1.jpeg" },
-            { text: "Solo quería decirte y pedirte...", img: "foto2.jpeg" },
-            { text: "que si quieres ser mi...", img: "foto3.jpeg" },
-            { text: "Miiiiiiiiiiiiiiiiiiiiiiiiiiii", img: "foto4.jpeg" },
-            { text: "San Valentín, te amo ❤️", img: "foto5.jpeg" }
+            { text: "Solo quería decirte que estos 3 meses han sido meses muy lindos...
+", img: "foto2.jpeg" },
+            { text: "y estoy muy feliz de que hayas llegado a mi vida
+", img: "foto3.jpeg" },
+            { text: "Quieres ser mi.......
+", img: "foto4.jpeg" },
+            { text: "San Valentín?, te amo ❤️", img: "foto5.jpeg" }
         ];
 
         let currentIndex = 0;
@@ -307,7 +310,7 @@
         function accept() {
             // Volver a mostrar la foto bonita (la 5)
             photo.src = slides[4].img; 
-            text.innerHTML = "¡Sabía que dirías que sí! 😏<br>Te amo.";
+            text.innerHTML = "¡Sabía que dirías que sí! <br>Te amo.";
             
             finalOptions.style.display = 'none'; // Ocultar botones
             gifOverlay.style.opacity = 0; // Ocultar gif por si acaso
@@ -366,4 +369,5 @@
         }
     </script>
 </body>
+
 </html>
