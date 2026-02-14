@@ -72,18 +72,14 @@
             transition: opacity 0.2s;
         }
 
-        /* AJUSTE CLAVE PARA LA SIMETRÍA */
         h2 {
             font-family: 'Pacifico', cursive;
             color: #ff4d6d;
-            font-size: 1.4rem; /* Un poco más pequeño para que quepa texto largo */
-            
-            /* Esto asegura que el espacio del texto sea siempre igual */
-            min-height: 90px; 
+            font-size: 1.4rem;
+            min-height: 90px;
             display: flex;
-            align-items: center; /* Centra el texto verticalmente */
+            align-items: center;
             justify-content: center;
-            
             margin: 10px 0;
             line-height: 1.3;
             width: 100%;
@@ -127,7 +123,7 @@
             font-weight: bold;
             font-size: 1rem;
             cursor: pointer;
-            z-index: 100;
+            z-index: 1; /* Nivel bajo al inicio */
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             white-space: nowrap;
         }
@@ -141,7 +137,7 @@
             font-weight: bold;
             font-size: 1rem;
             cursor: pointer;
-            z-index: 50;
+            z-index: 10; /* Nivel ALTO para que flote sobre el SÍ mientras crece */
         }
 
         .progress-bar {
@@ -215,8 +211,6 @@
     </div>
 
     <script>
-        // DATOS DE LAS DIAPOSITIVAS CORREGIDOS
-        // IMPORTANTE: Todo el texto debe estar en una sola línea dentro de las comillas
         const slides = [
             { text: "Hola mi amor!!!!", img: "foto1.jpeg" },
             { text: "Solo quería decirte que estos 3 meses han sido meses muy lindos...", img: "foto2.jpeg" },
@@ -245,7 +239,7 @@
 
         function nextSlide() {
             if (!musicStarted) {
-                audio.play().catch(() => console.log("Autoplay bloqueado por navegador"));
+                audio.play().catch(() => console.log("Autoplay bloqueado"));
                 musicStarted = true;
             }
 
@@ -278,7 +272,8 @@
             }, 1500);
 
             if (noClicks < 7) {
-                let scale = 1 + (noClicks * 0.5); 
+                // AQUI ESTA EL CAMBIO: Multiplicador 0.15 para crecimiento LENTO
+                let scale = 1 + (noClicks * 0.15); 
                 yesBtn.style.transform = `scale(${scale})`;
                 
                 const wiggleX = (Math.random() - 0.5) * 20;
@@ -286,6 +281,9 @@
                 noBtn.style.transform = `translate(${wiggleX}px, ${wiggleY}px)`;
             } else {
                 noBtn.style.display = 'none';
+                
+                // Al final le damos z-index alto para que tape todo
+                yesBtn.style.zIndex = '100'; 
                 yesBtn.style.transform = 'scale(6)'; 
                 yesBtn.innerText = "¡YA DALE AL SÍ! 😍";
                 yesBtn.style.backgroundColor = "#ff006e";
@@ -301,11 +299,7 @@
         }
 
         function toggleMusic() {
-            if (audio.paused) {
-                audio.play();
-            } else {
-                audio.pause();
-            }
+            audio.paused ? audio.play() : audio.pause();
         }
 
         function createHearts() {
