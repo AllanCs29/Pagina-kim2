@@ -17,7 +17,7 @@
             min-height: 100vh;
             font-family: 'Montserrat', sans-serif;
             overflow: hidden;
-            touch-action: none; /* Evita zoom doble tap en celular */
+            touch-action: none;
         }
 
         .container {
@@ -35,11 +35,10 @@
             z-index: 10;
         }
 
-        /* Marco de la foto */
         .photo-frame {
             width: 100%;
             height: 0;
-            padding-bottom: 100%; /* Hace que sea un cuadrado perfecto */
+            padding-bottom: 100%;
             position: relative;
             background-color: #fff;
             border: 2px solid #ff4d6d;
@@ -60,27 +59,34 @@
             z-index: 1;
         }
 
-        /* GIF superpuesto */
         .gif-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Para que el GIF se vea completo */
-            opacity: 0; /* Invisible al inicio */
-            z-index: 5; /* Encima de la foto */
-            pointer-events: none; /* Para que no bloquee clicks */
+            object-fit: contain;
+            opacity: 0;
+            z-index: 5;
+            pointer-events: none;
             transition: opacity 0.2s;
         }
 
+        /* AJUSTE CLAVE PARA LA SIMETRÍA */
         h2 {
             font-family: 'Pacifico', cursive;
             color: #ff4d6d;
-            font-size: 1.6rem;
-            min-height: 60px;
+            font-size: 1.4rem; /* Un poco más pequeño para que quepa texto largo */
+            
+            /* Esto asegura que el espacio del texto sea siempre igual */
+            min-height: 90px; 
+            display: flex;
+            align-items: center; /* Centra el texto verticalmente */
+            justify-content: center;
+            
             margin: 10px 0;
-            line-height: 1.2;
+            line-height: 1.3;
+            width: 100%;
         }
 
         button {
@@ -88,7 +94,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Botón Siguiente */
         #nextBtn {
             background-color: #ff4d6d;
             color: white;
@@ -102,7 +107,6 @@
             margin-bottom: 10px;
         }
 
-        /* Contenedor botones finales */
         .final-buttons {
             display: none;
             gap: 15px;
@@ -111,11 +115,11 @@
             margin-top: 10px;
             position: relative;
             width: 100%;
-            min-height: 80px; /* Espacio para que crezcan */
+            min-height: 80px;
         }
 
         .btn-yes {
-            background-color: #2dc653; /* Verde éxito */
+            background-color: #2dc653;
             color: white;
             padding: 12px 25px;
             border: none;
@@ -123,13 +127,13 @@
             font-weight: bold;
             font-size: 1rem;
             cursor: pointer;
-            z-index: 100; /* Siempre encima */
+            z-index: 100;
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             white-space: nowrap;
         }
 
         .btn-no {
-            background-color: #ef233c; /* Rojo error */
+            background-color: #ef233c;
             color: white;
             padding: 12px 25px;
             border: none;
@@ -140,7 +144,6 @@
             z-index: 50;
         }
 
-        /* Barra de progreso */
         .progress-bar {
             width: 100%;
             height: 6px;
@@ -157,7 +160,6 @@
             transition: width 0.3s ease;
         }
 
-        /* Control de música */
         .music-control {
             position: absolute;
             top: 10px;
@@ -170,7 +172,6 @@
             z-index: 20;
         }
 
-        /* Corazones de fondo */
         .heart-bg {
             position: fixed;
             color: #ffb3c1;
@@ -214,23 +215,20 @@
     </div>
 
     <script>
-        // DATOS DE LAS DIAPOSITIVAS
+        // DATOS DE LAS DIAPOSITIVAS CORREGIDOS
+        // IMPORTANTE: Todo el texto debe estar en una sola línea dentro de las comillas
         const slides = [
             { text: "Hola mi amor!!!!", img: "foto1.jpeg" },
-            { text: "Solo quería decirte que estos 3 meses han sido meses muy lindos...
-", img: "foto2.jpeg" },
-            { text: "y estoy muy feliz de que hayas llegado a mi vida
-", img: "foto3.jpeg" },
-            { text: "Quieres ser mi.......
-", img: "foto4.jpeg" },
-            { text: "San Valentín?, te amo ❤️", img: "foto5.jpeg" }
+            { text: "Solo quería decirte que estos 3 meses han sido meses muy lindos...", img: "foto2.jpeg" },
+            { text: "y estoy muy feliz de que hayas llegado a mi vida", img: "foto3.jpeg" },
+            { text: "Quería preguntarte si...", img: "foto4.jpeg" },
+            { text: "Quieres ser mi San Valentín? Te amo ❤️", img: "foto5.jpeg" }
         ];
 
         let currentIndex = 0;
         let musicStarted = false;
         let noClicks = 0;
         
-        // ELEMENTOS DEL DOM
         const photo = document.getElementById('mainPhoto');
         const gifOverlay = document.getElementById('gifOverlay');
         const text = document.getElementById('mainText');
@@ -243,12 +241,9 @@
 
         audio.volume = 0.5;
 
-        // INICIAR CORAZONES DE FONDO
         createHearts();
 
-        // FUNCIÓN SIGUIENTE DIAPOSITIVA
         function nextSlide() {
-            // Intentar reproducir música al primer click
             if (!musicStarted) {
                 audio.play().catch(() => console.log("Autoplay bloqueado por navegador"));
                 musicStarted = true;
@@ -257,7 +252,6 @@
             currentIndex++;
 
             if (currentIndex < slides.length) {
-                // Efecto de cambio de imagen
                 photo.style.opacity = 0;
                 setTimeout(() => {
                     photo.src = slides[currentIndex].img;
@@ -265,11 +259,9 @@
                     photo.style.opacity = 1;
                 }, 200);
 
-                // Actualizar barra de progreso
                 const percentage = ((currentIndex + 1) / slides.length) * 100;
                 progressBar.style.width = percentage + '%';
 
-                // Si es la última diapositiva, cambiar botones
                 if (currentIndex === slides.length - 1) {
                     nextBtn.style.display = 'none';
                     finalOptions.style.display = 'flex';
@@ -277,48 +269,37 @@
             }
         }
 
-        // --- LÓGICA DEL BOTÓN NO ---
         function growYesBtn() {
             noClicks++;
             
-            // 1. Mostrar GIF por 1.5 segundos
             gifOverlay.style.opacity = 1;
             setTimeout(() => {
                 gifOverlay.style.opacity = 0;
             }, 1500);
 
-            // 2. Lógica de crecimiento (Hasta 7 veces)
             if (noClicks < 7) {
-                // El botón SI crece gradualmente
                 let scale = 1 + (noClicks * 0.5); 
                 yesBtn.style.transform = `scale(${scale})`;
                 
-                // El botón NO se mueve un poquito para molestar
                 const wiggleX = (Math.random() - 0.5) * 20;
                 const wiggleY = (Math.random() - 0.5) * 20;
                 noBtn.style.transform = `translate(${wiggleX}px, ${wiggleY}px)`;
             } else {
-                // CLIC 7: FINAL INEVITABLE
-                noBtn.style.display = 'none'; // Desaparece el botón NO
-                yesBtn.style.transform = 'scale(6)'; // Botón SI gigante (ajustado para que quepa en cel)
+                noBtn.style.display = 'none';
+                yesBtn.style.transform = 'scale(6)'; 
                 yesBtn.innerText = "¡YA DALE AL SÍ! 😍";
                 yesBtn.style.backgroundColor = "#ff006e";
             }
         }
 
-        // FUNCIÓN ACEPTAR (BOTÓN SÍ)
         function accept() {
-            // Volver a mostrar la foto bonita (la 5)
             photo.src = slides[4].img; 
             text.innerHTML = "¡Sabía que dirías que sí! <br>Te amo.";
-            
-            finalOptions.style.display = 'none'; // Ocultar botones
-            gifOverlay.style.opacity = 0; // Ocultar gif por si acaso
-
-            launchConfetti(); // Celebración
+            finalOptions.style.display = 'none';
+            gifOverlay.style.opacity = 0;
+            launchConfetti();
         }
 
-        // CONTROL MÚSICA
         function toggleMusic() {
             if (audio.paused) {
                 audio.play();
@@ -327,7 +308,6 @@
             }
         }
 
-        // FONDO DE CORAZONES
         function createHearts() {
             setInterval(() => {
                 const heart = document.createElement('div');
@@ -342,7 +322,6 @@
             }, 500);
         }
 
-        // CONFETI FINAL EXPLOSIVO
         function launchConfetti() {
             for(let i=0; i<80; i++) {
                 const particle = document.createElement('div');
@@ -356,7 +335,6 @@
                 particle.style.transition = 'all 1.5s ease-out';
                 document.body.appendChild(particle);
 
-                // Dispersión desde el centro
                 setTimeout(() => {
                     const x = (Math.random() - 0.5) * window.innerWidth * 1.5;
                     const y = (Math.random() - 0.5) * window.innerHeight * 1.5;
@@ -369,5 +347,4 @@
         }
     </script>
 </body>
-
 </html>
